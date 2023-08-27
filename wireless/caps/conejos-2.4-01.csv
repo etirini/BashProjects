@@ -1,0 +1,9 @@
+
+BSSID, First time seen, Last time seen, channel, Speed, Privacy, Cipher, Authentication, Power, # beacons, # IV, LAN IP, ID-length, ESSID, Key
+6C:CD:D6:8A:FE:4F, 2023-08-27 18:02:31, 2023-08-27 18:04:17, 10, 260, WPA2, CCMP, PSK, -64,      367,      107,   0.  0.  0.  0,  11, conejos-2.4, 
+
+Station MAC, First time seen, Last time seen, Power, # packets, BSSID, Probed ESSIDs
+84:F7:03:4C:97:F4, 2023-08-27 18:02:32, 2023-08-27 18:04:14, -44,       77, 6C:CD:D6:8A:FE:4F,
+34:B4:72:55:76:FC, 2023-08-27 18:02:32, 2023-08-27 18:04:12, -64,       63, 6C:CD:D6:8A:FE:4F,
+E6:6F:FA:87:DE:D9, 2023-08-27 18:03:50, 2023-08-27 18:03:50, -52,        3, 6C:CD:D6:8A:FE:4F,
+

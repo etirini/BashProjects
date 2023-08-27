@@ -1,0 +1,7 @@
+
+BSSID, First time seen, Last time seen, channel, Speed, Privacy, Cipher, Authentication, Power, # beacons, # IV, LAN IP, ID-length, ESSID, Key
+60:6C:63:D1:F6:D8, 2023-08-27 16:11:55, 2023-08-27 16:12:02,  6, 195, WPA2, CCMP, PSK, -64,        3,        0,   0.  0.  0.  0,   4, Zeus, 
+6C:CD:D6:8A:FE:4F, 2023-08-27 16:11:55, 2023-08-27 16:12:01, 10, 260, WPA2, CCMP, PSK, -38,        3,        0,   0.  0.  0.  0,  11, conejos-2.4, 
+4E:2E:5E:98:5B:CB, 2023-08-27 16:11:55, 2023-08-27 16:12:02,  1, 130, WPA2, CCMP, PSK, -49,        7,        0,   0.  0.  0.  0,  26, S22, 
+
+
