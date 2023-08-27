@@ -1,0 +1,9 @@
+[0m02:44:47  Created capture file "caps/conejos-2.4-04.cap".
+[?25l[2J[0m02:58:31  Created capture file "caps/conejos-2.4-01.cap".
+[?25l[2J[0m02:59:58  Created capture file "caps/conejos-2.4-02.cap".
+[?25l[2J[0m03:00:11  Created capture file "caps/conejos-2.4-03.cap".
+[?25l[2J[0m03:00:39  Created capture file "caps/conejos-2.4-04.cap".
+[?25l[2J[0m03:00:55  Created capture file "caps/conejos-2.4-05.cap".
+[?25l[2J[0m03:01:13  Created capture file "caps/conejos-2.4-06.cap".
+[?25l[2J[0m03:01:25  Created capture file "caps/conejos-2.4-07.cap".
+[?25l[2J
