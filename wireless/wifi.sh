@@ -63,6 +63,8 @@ function recuperaredes() {
     wait $beacon_pid
 }
 
+
+
 function beacon() {
     local maclist chanlist cryplist keylist
     eval "$(echo "$1")"
@@ -82,8 +84,34 @@ function beacon() {
         sleep 3
     done
     wait
+    sleep 30
+    sharky
+    
+
 }
 
 
+
+function sharky(){ 
+
+    # Specify the folder containing the .cap files
+    folder="caps/"
+
+    for capfile in "$folder"/*.cap; do
+        if [ -f "$capfile" ]; then
+            filename_noext=$(basename -- "$capfile" .cap)
+
+            tshark -r "$capfile" -R "(wlan.fc.type_subtype == 0x00 || wlan.fc.type_subtype == 0x02 || wlan.fc.type_subtype == 0x04 || wlan.fc.type_subtype == 0x05 || wlan.fc.type_subtype == 0x08 || eapol)" -2 -F pcapng -w "caps/tsharks/${filename_noext}_stripped.pcapng"
+        fi
+    done
+}
+
+
+
 recuperaredes
+
+
+
+
+
 
